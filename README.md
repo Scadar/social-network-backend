@@ -3,7 +3,8 @@
 - [Front-end](https://github.com/Scadar/social-network-frontend)
 - [Back-end](https://github.com/Scadar/social-network-backend)
 
-Full Stack social network application. Created with Express, Socket.IO, React and Typescript.
+Full Stack social network application  
+Created with Express, Socket.IO, React and Typescript  
 **Live demo is [here]()**
 
 ## Back-end Stack
@@ -47,6 +48,6 @@ Full Stack social network application. Created with Express, Socket.IO, React an
 
 ## About
 
-Author: Miroshnikov Roman
-Email: teghtml@yandex.ru
-VK: https://vk.com/romantlt
+Author: Miroshnikov Roman  
+Email: teghtml@yandex.ru  
+VK: https://vk.com/romantlt  
