@@ -6,7 +6,7 @@ import userModel from './userModel';
 import {isEmpty} from '../../utils/util';
 import {v4 as uuid} from 'uuid';
 import {Singleton} from '../../utils/Singleton';
-import FileService from '../files/FileService';
+import FsService from '../fs/FsService';
 import {UploadedFile} from 'express-fileupload';
 import {PaginationResponse} from '../../interfaces/pagintaionInterface';
 import FriendService from '../friend/FriendService';
@@ -16,7 +16,7 @@ import {UserToUserRelationship} from '../friend/friendInterface';
 @Singleton
 class UserService {
   public userModel = userModel;
-  public fileService = new FileService();
+  public fileService = new FsService();
   public friendService = new FriendService();
 
   public async findUsersByIds(ids: string[]): Promise<IUserDocument[]> {

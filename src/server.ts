@@ -7,6 +7,7 @@ import ChatMessageRoute from './components/chat/chatMessage/ChatMessageRoute';
 import AuthRoute from './components/auth/auth/AuthRoute';
 import {WSChat} from './components/chat/WSChat';
 import {WSRooms} from './components/chat/WSRooms';
+import FileRoute from './components/disk/file/FileRoute';
 
 validateEnv();
 
@@ -16,6 +17,7 @@ const app = new App([
       new FriendRoute(),
       new ChatRoomRoute(),
       new ChatMessageRoute(),
+      new FileRoute(),
     ],
     (io, socket) => {
       new WSChat(io, socket);

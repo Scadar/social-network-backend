@@ -4,9 +4,10 @@ import * as path from 'path';
 import {v4 as uuid} from 'uuid';
 import {HttpException} from '../../exceptions/HttpException';
 import {UploadedFile} from 'express-fileupload';
+import {FILE_PATH} from '../../config';
 
 @Singleton
-class FileService {
+class FsService {
 
   public createFile(file: UploadedFile): string {
     try {
@@ -30,6 +31,23 @@ class FileService {
       throw HttpException.internalServerError('Ошибка при удалении файла');
     }
   }
+
+  public createDir = (userId: string, filePath: string) => {
+    const dirPath = path.resolve(FILE_PATH, userId, filePath);
+    console.log(dirPath)
+    return new Promise((resolve, reject) => {
+      try {
+        if (!fs.existsSync(dirPath)) {
+          fs.mkdirSync(dirPath, {recursive: true});
+          return resolve({path: dirPath});
+        } else {
+          return reject(HttpException.conflict(`File already exist`));
+        }
+      } catch (e) {
+        return reject(HttpException.internalServerError(`Create dir error`));
+      }
+    });
+  };
 }
 
-export default FileService;
+export default FsService;

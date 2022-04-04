@@ -21,4 +21,5 @@ export const {
   MAIL_PORT,
   API_URL_BACK,
   API_URL_FRONT,
+  FILE_PATH
 } = process.env;
