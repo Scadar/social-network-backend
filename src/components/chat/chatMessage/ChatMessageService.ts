@@ -22,6 +22,14 @@ class ChatMessageService {
     return await this.chatMessageModel.create({senderId, chatRoomId, message});
   }
 
+  public async findLastMessageByRoomId(roomId: string): Promise<IChatMessageDocument> {
+    return this.chatMessageModel
+        .findOne({
+          chatRoomId: roomId,
+        })
+        .sort({createdAt: -1});
+  }
+
   public async createMessageWithUserInfo(
       senderId: string,
       chatRoomId: string,

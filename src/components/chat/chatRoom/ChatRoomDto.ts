@@ -9,7 +9,6 @@ export default class ChatRoomDto {
   public pictureURL?: string;
   public type: ChatRoomType;
   public user?: UserDto;
-
   constructor(
       id: string,
       userIds: string[],

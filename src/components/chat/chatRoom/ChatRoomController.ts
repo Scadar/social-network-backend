@@ -19,7 +19,7 @@ class ChatRoomController {
 
   public findUserChatRooms = async (req: RequestWithUser, res: Response, next: NextFunction) => {
     try {
-      const rooms = await this.chatRoomUserService.findUserChatRoomsWithUserInfo(req.user._id);
+      const rooms = await this.chatRoomUserService.findUserChatRoomsWithLastMessage(req.user._id);
       res.status(200).json(rooms);
     } catch (error) {
       next(error);

@@ -8,6 +8,7 @@ import {MongoId} from '../../../interfaces/base';
 import {HttpException} from '../../../exceptions/HttpException';
 import ChatMessageService from '../chatMessage/ChatMessageService';
 import ChatMessageDto from '../chatMessage/ChatMessageDto';
+import {IChatMessageDocument} from '../chatMessage/chatMessageInterface';
 
 @Singleton
 class ChatUserService {
@@ -15,11 +16,52 @@ class ChatUserService {
   public chatRoomService = new ChatRoomService();
   public chatMessageService = new ChatMessageService();
 
+  public async findUserChatRoomsWithLastMessage(userId: string) {
+    const result: {room: ChatRoomDto, lastMessage?: IChatMessageDocument}[] = [];
+    const rooms = await this.chatRoomService.findUserChatRooms(userId);
+
+    const userRoomMap = new Map<string, IChatRoomDocument>();
+
+    rooms.forEach(room => {
+      if (room.type === ChatRoomType.PRIVATE) {
+        userRoomMap.set(
+            this.getPartnerUserIdIntoPrivateChatRoom(room.userIds, userId),
+            room,
+        );
+      }
+    });
+
+    const users = await this.userService.findUsersByIds(Array.from(userRoomMap.keys()));
+    const usersDto = UserDto.fromArrayUserDocuments(users);
+
+    usersDto.forEach(user => {
+      const room = userRoomMap.get(user._id);
+      const chatRoomDto = ChatRoomDto.fromChatRoomDocument(room);
+      chatRoomDto.setUserDto(user);
+      result.push({room: chatRoomDto});
+    });
+
+    for(let i = 0; i < result.length; i++){
+      result[i].lastMessage = await this.findLastMessageByRoomId(result[i].room._id.toString());
+    }
+    return result;
+  }
+
+  public async findOrCreatePrivateChatRoom(sourceUserId: string, targetUserId: string) {
+    const room = await this.chatRoomService.findOrCreatePrivateChatRoom(sourceUserId, targetUserId);
+    const lastMessage = await this.findLastMessageByRoomId(room._id.toString());
+    return {room, lastMessage};
+  }
+
+  public async findLastMessageByRoomId(roomId: string): Promise<IChatMessageDocument> {
+    return await this.chatMessageService.findLastMessageByRoomId(roomId);
+  }
+
   public async findMessagesByChatRoomIdAndUserId(
       chatRoomId: string,
       userId: string,
       skip: number,
-      pageSize: number
+      pageSize: number,
   ) {
     const chatRoom = await this.chatRoomService.findChatRoomById(chatRoomId);
 
