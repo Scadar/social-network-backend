@@ -6,7 +6,8 @@ export interface IFile {
   type: string;
   accessLink?: string;
   size: number;
-  path: string;
+  parentPath: string;
+  fullPath: string;
   userId: MongoId;
   parentId: MongoId;
   childrenIds: MongoId[];

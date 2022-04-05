@@ -18,9 +18,31 @@ class FileController {
 
   public getFilesByParent = async (req: RequestWithUser, res: Response, next: NextFunction) => {
     try {
-      const {parentId} = req.params;
+      const {parentId} = req.query;
       const userId = req.user._id;
-      const files = await this.fileService.getFilesByParent(userId, parentId);
+      const files = await this.fileService.getFilesByParent(userId, parentId as string);
+      res.status(200).json(files);
+    } catch (e) {
+      next(e);
+    }
+  };
+
+  public getFilesByParentPath = async (req: RequestWithUser, res: Response, next: NextFunction) => {
+    try {
+      const {path} = req.body;
+      const userId = req.user._id;
+      const files = await this.fileService.getFilesByParentPath(userId, path);
+      res.status(200).json(files);
+    } catch (e) {
+      next(e);
+    }
+  };
+
+  public getFilesByPath = async (req: RequestWithUser, res: Response, next: NextFunction) => {
+    try {
+      const {path} = req.body;
+      const userId = req.user._id;
+      const files = await this.fileService.getFileByPath(userId, path);
       res.status(200).json(files);
     } catch (e) {
       next(e);

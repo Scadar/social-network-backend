@@ -19,9 +19,19 @@ class FileRoute implements Routes {
         this.fileController.createDir,
     );
     this.router.get(
-        `${this.path}`,
+        `${this.path}/byParentId`,
         authMiddleware,
         this.fileController.getFilesByParent,
+    );
+    this.router.post(
+        `${this.path}/byParentPath`,
+        authMiddleware,
+        this.fileController.getFilesByParentPath,
+    );
+    this.router.post(
+        `${this.path}/byPath`,
+        authMiddleware,
+        this.fileController.getFilesByPath,
     );
   }
 }

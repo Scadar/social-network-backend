@@ -17,7 +17,11 @@ const fileSchema: Schema = new Schema({
     type: Number,
     default: 0,
   },
-  path: {
+  fullPath: {
+    type: String,
+    required: true,
+  },
+  parentPath: {
     type: String,
     default: '',
   },
@@ -37,7 +41,7 @@ const fileSchema: Schema = new Schema({
 }, {
   timestamps: true,
 });
-
+//TODO create index (unique name+path)
 const fileModel = model<IFileDocument>('File', fileSchema);
 
 export default fileModel;
